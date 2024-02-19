@@ -211,14 +211,51 @@ void cmp_reg_assm(void) {
         setBits_num(6, shift2num(SHIFT), 2);
         setBits_num(11, 0, 5);
     }
-    setBits_str(27, "00010101xxxx000000000000");
+    setBits_str(27, "00010101xxxx0000");
+    setBits_str(4, "0");
 
     
-    // set Rd
-    setBits_num(19, PARAM1.value, 4);
+    if (PARAM3.type == EMPTY) {
+        // set Rn
+        setBits_num(19, PARAM1.value, 4);
 
-    // set reg 2
-    setBits_num(3, PARAM2.value, 4);
+        // set Rm
+        setBits_num(3, PARAM2.value, 4);
+    }
+    // 3 registers
+    else if (PARAM3.type == REGISTER) {
+        // set Rn
+        setBits_num(19, PARAM2.value, 4);
+
+        // set Rm
+        setBits_num(3, PARAM3.value, 4);
+    }
+
+
+    // 2 registers and shift
+    if (PARAM3.type == IMMEDIATE) {
+        // set Rn, Rn == Rd
+        setBits_num(19, PARAM1.value, 4);
+
+        // set Rm
+        setBits_num(3, PARAM2.value, 4);
+
+        // set shift type and value
+        setBits_num(6, shift2num(SHIFT), 2);
+        setBits_num(11, PARAM3.value, 5);
+    }
+    // 3 registers and shift
+    else if (PARAM4.type == IMMEDIATE) {
+        // set shift type and value
+        setBits_num(6, shift2num(SHIFT), 2);
+        setBits_num(11, PARAM4.value, 5);
+    }
+    // No shift given
+    else {
+        // set shift type and value
+        setBits_num(6, shift2num(SHIFT), 2);
+        setBits_num(11, 0, 5);
+    }
 
     // tell the system the encoding is done
     state = COMPLETE_ENCODE;
