@@ -257,6 +257,7 @@ void and_reg_assm(void) {
 	// setBits_str(start_bit, string)
 	//  any x in string will be skipped
 	setBits_str(27, "0000000");
+    setBits_str(4, "0");
 
 	// Set S bit
 	setBits_num(20, S_FLAG, 1);
